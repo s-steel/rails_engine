@@ -23,4 +23,4 @@
 /config/master.key
 
 # Ignore test coverage
-/coverage/*
+coverage/*
