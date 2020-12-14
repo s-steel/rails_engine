@@ -101,20 +101,29 @@ RSpec.describe 'Item API', type: :request do
     end
 
     it 'will error out if request is invalid' do
-      invalid_params = { name: '' }
-      post '/api/v1/merchants', params: invalid_params
+      invalid_params = { description: 'Test Item',
+                         unit_price: 5.99,
+                         merchant_id: @merchant.id }
+      post '/api/v1/items', params: invalid_params
       expect(response).to_not be_successful
       expect(response).to have_http_status(422)
       expect(response.body).to match('Validation failed: Name can\'t be blank')
 
-      # invalid_params = { name: 'Test Item',
-      #                    unit_price: 5.99,
-      #                    merchant_id: @merchant.id }
-      # post '/api/v1/merchants', params: invalid_params
-      # expect(response).to_not be_successful
-      # expect(response).to have_http_status(422)
-      # expect(response.body).to match('Validation failed: Description can\'t be blank')
+      invalid_params = { name: 'Test Item',
+                         unit_price: 5.99,
+                         merchant_id: @merchant.id }
+      post '/api/v1/items', params: invalid_params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(422)
+      expect(response.body).to match('Validation failed: Description can\'t be blank')
 
+      invalid_params = { name: 'Test Item',
+                         description: 'It does stuff',
+                         unit_price: 5.99 }
+      post '/api/v1/items', params: invalid_params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(422)
+      expect(response.body).to match('Validation failed: Merchant must exist')
     end
   end
 end
