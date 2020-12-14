@@ -1,6 +1,11 @@
 class Api::V1::MerchantsController < ApplicationController
+  before_action :find_item, only: [:index]
   def index
-    json_response(Merchant.all)
+    if find_item.nil?
+      json_response(Merchant.all)
+    else
+      json_response(@item.merchant)
+    end
   end
 
   def show
@@ -26,5 +31,13 @@ class Api::V1::MerchantsController < ApplicationController
 
   def merchant_params
     params.permit(:name)
+  end
+
+  def find_item
+    if params[:item_id]
+      @item = Item.find(params[:item_id])
+    else
+      nil
+    end
   end
 end
