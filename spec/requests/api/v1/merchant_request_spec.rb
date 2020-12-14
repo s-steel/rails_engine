@@ -94,13 +94,13 @@ RSpec.describe 'Merchant API', type: :request do
     it 'can update an existing merchant' do 
       old_name = @merch1.name
       new_name = { name: 'New Name' }
-      patch "/api/v1/merchants'/#{@merch1.id}", params: @merch_params
-      new_merchant_info =  Merchant.find_by(id: @merch1.id)
+      patch "/api/v1/merchants/#{@merch1.id}", params: new_name
+      new_merchant_info = Merchant.find_by(id: @merch1.id)
 
       expect(response).to be_successful
       expect(response).to have_http_status(200)
+      expect(new_merchant_info.name).to eq(new_name[:name])
       expect(new_merchant_info.name).to_not eq(old_name)
-      expect(new_merchant_info.name).to eq(new_name)
     end
   end
 end
