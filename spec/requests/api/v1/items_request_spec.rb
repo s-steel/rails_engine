@@ -38,4 +38,45 @@ RSpec.describe 'Item API', type: :request do
       end
     end
   end
+
+  describe 'GET /items/:id' do
+    before :each do
+      @item = create(:item)
+      get "/api/v1/items/#{@item.id}"
+    end
+
+    it 'returns one item by id' do
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      item = JSON.parse(response.body, symbolize_names: true)
+      expect(item).to_not be_empty
+
+      expect(item).to have_key(:id)
+      expect(item[:id]).to eq(@item.id)
+
+      expect(item).to have_key(:name)
+      expect(item[:name]).to be_an(String)
+
+      expect(item).to have_key(:description)
+      expect(item[:description]).to be_an(String)
+
+      expect(item).to have_key(:unit_price)
+      expect(item[:unit_price]).to be_a(Float)
+
+      expect(item).to have_key(:merchant_id)
+      expect(item[:merchant_id]).to be_a(Integer)
+
+      expect(item).to have_key(:created_at)
+      expect(item[:created_at]).to be_an(String)
+
+      expect(item).to have_key(:updated_at)
+      expect(item[:updated_at]).to be_an(String)
+    end
+
+    it 'returns error when there is no item with that id' do
+      get '/api/v1/items/100'
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Item with \'id\'=100')
+    end
+  end
 end
