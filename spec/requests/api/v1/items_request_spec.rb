@@ -79,4 +79,42 @@ RSpec.describe 'Item API', type: :request do
       expect(response.body).to match('Couldn\'t find Item with \'id\'=100')
     end
   end
+
+  describe 'POST /items' do
+    before :each do
+      @merchant = create(:merchant)
+      @item_params = { name: 'Test Item',
+                       description: 'Does this work??',
+                       unit_price: 5.99,
+                       merchant_id: @merchant.id }
+    end
+
+    it 'can create a new item' do
+      post '/api/v1/items', params: @item_params
+      item_info = JSON.parse(response.body, symbolize_names: true)
+      expect(response).to be_successful
+      expect(response).to have_http_status(201)
+      expect(item_info[:name]).to eq(@item_params[:name])
+      expect(item_info[:description]).to eq(@item_params[:description])
+      expect(item_info[:unit_price]).to eq(@item_params[:unit_price])
+      expect(item_info[:merchant_id]).to eq(@item_params[:merchant_id])
+    end
+
+    it 'will error out if request is invalid' do
+      invalid_params = { name: '' }
+      post '/api/v1/merchants', params: invalid_params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(422)
+      expect(response.body).to match('Validation failed: Name can\'t be blank')
+
+      # invalid_params = { name: 'Test Item',
+      #                    unit_price: 5.99,
+      #                    merchant_id: @merchant.id }
+      # post '/api/v1/merchants', params: invalid_params
+      # expect(response).to_not be_successful
+      # expect(response).to have_http_status(422)
+      # expect(response.body).to match('Validation failed: Description can\'t be blank')
+
+    end
+  end
 end
