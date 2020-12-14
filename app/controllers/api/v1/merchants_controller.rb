@@ -1,18 +1,24 @@
 class Api::V1::MerchantsController < ApplicationController
   def index
-    render json: Merchant.all
+    json_response(Merchant.all)
   end
 
   def show
-    render json: Merchant.find(params[:id])
+    json_response(Merchant.find(params[:id]))
   end
 
   def create
-    render json: Merchant.create(merchant_params)
+    json_response(Merchant.create!(merchant_params), :created)
   end
 
   def update
-    render json: Merchant.update(params[:id], merchant_params)
+    json_response(Merchant.update(params[:id], merchant_params))
+    head :no_content
+  end
+
+  def destroy
+    json_response(Merchant.delete(params[:id]))
+    head :no_content
   end
 
   private

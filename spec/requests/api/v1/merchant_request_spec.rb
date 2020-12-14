@@ -69,38 +69,51 @@ RSpec.describe 'Merchant API', type: :request do
 
     it 'can create a new merchant' do
       post '/api/v1/merchants', params: @merch_params
-      merchant_info =  JSON.parse(response.body, symbolize_names: true)
+      merchant_info = JSON.parse(response.body, symbolize_names: true)
       expect(response).to be_successful
+      expect(response).to have_http_status(201)
       expect(merchant_info[:name]).to eq(@merch_params[:name])
     end
 
-    # it 'another example test setup' do
-    #   merch_params = ({ name: 'Test Merchant' })
-    #   headers = {'CONTENT_TYPE' => 'applicaiton/json'}
-    #   post '/api/v1/merchants', headers: headers, params: JSON.generate(merchant: merch_params)
-    #   created_merch = Merchant.last
-    
-    #   expect(response).to be_successful
-    #   expect(created_merch.name).to eq(merch_params[:name])
-    # end
     it 'will error out if request is invalid'
   end
 
-  describe 'PATCH /merchants' do
+  describe 'PATCH /merchants/:id' do
     before :each do
       @merch1 = create(:merchant)
     end
 
-    it 'can update an existing merchant' do 
+    it 'can update an existing merchant' do
       old_name = @merch1.name
       new_name = { name: 'New Name' }
       patch "/api/v1/merchants/#{@merch1.id}", params: new_name
       new_merchant_info = Merchant.find_by(id: @merch1.id)
 
       expect(response).to be_successful
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(204)
       expect(new_merchant_info.name).to eq(new_name[:name])
       expect(new_merchant_info.name).to_not eq(old_name)
+    end
+
+    it 'returns error if record doesn\'t exist or has invalid params'
+  end
+
+  describe 'DELETE /merchants' do
+    before :each do
+      create_list(:merchant, 3)
+      @merch1 = Merchant.first
+      @merch2 = Merchant.last
+    end
+
+    it 'can detroy a merchant' do
+      expect(Merchant.count).to eq(3)
+      delete "/api/v1/merchants/#{@merch1.id}"
+
+      expect(response).to be_successful
+      expect(response).to have_http_status(204)
+      expect(Merchant.count).to eq(2)
+      expect { Merchant.find(@merch1.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { delete "/api/v1/merchants/#{@merch2.id}" }.to change(Merchant, :count).by(-1)
     end
   end
 end
