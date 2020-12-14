@@ -37,5 +37,11 @@ RSpec.describe 'Merchant Items API', type: :request do
         expect(item[:updated_at]).to be_an(String)
       end
     end
+
+    it 'returns error when record does not exist' do
+      get "/api/v1/merchants/0/items"
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=0')
+    end
   end
 end

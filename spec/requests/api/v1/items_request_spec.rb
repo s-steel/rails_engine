@@ -74,9 +74,9 @@ RSpec.describe 'Item API', type: :request do
     end
 
     it 'returns error when there is no item with that id' do
-      get '/api/v1/items/100'
+      get '/api/v1/items/0'
       expect(response).to have_http_status(404)
-      expect(response.body).to match('Couldn\'t find Item with \'id\'=100')
+      expect(response.body).to match('Couldn\'t find Item with \'id\'=0')
     end
   end
 
