@@ -8,7 +8,8 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def create
-    json_response(Merchant.create!(merchant_params), :created)
+    merchant = Merchant.create!(merchant_params)
+    json_response(merchant, :created)
   end
 
   def update

@@ -55,11 +55,11 @@ RSpec.describe 'Merchant API', type: :request do
       expect(merchant[:updated_at]).to be_an(String)
     end
 
-    # it 'when record doesn\'t exist' do
-    #   get "/api/v1/merchants/100}"
-    #   expect(response).to have_http_status(404)
-    #   expect(response.body).to match(/Couldn't find Todo/)
-    # end
+    it 'returns error when there is no merchant with that id' do
+      get "/api/v1/merchants/100"
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
+    end
   end
 
   describe 'POST /merchants' do
@@ -75,7 +75,13 @@ RSpec.describe 'Merchant API', type: :request do
       expect(merchant_info[:name]).to eq(@merch_params[:name])
     end
 
-    it 'will error out if request is invalid'
+    it 'will error out if request is invalid' do
+      invalid_params = { name: '' }
+      post '/api/v1/merchants', params: invalid_params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(422)
+      expect(response.body).to match('Validation failed: Name can\'t be blank')
+    end
   end
 
   describe 'PATCH /merchants/:id' do
@@ -95,7 +101,21 @@ RSpec.describe 'Merchant API', type: :request do
       expect(new_merchant_info.name).to_not eq(old_name)
     end
 
-    it 'returns error if record doesn\'t exist or has invalid params'
+    it 'returns error if record doesn\'t exist' do
+      params = { name: 'New Name' }
+      patch "/api/v1/merchants/100", params: params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
+    end
+
+    xit 'returns error when params are invalid' do
+      invalid_params = { }
+      patch "/api/v1/merchants/#{@merch1.id}", params: invalid_params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(422)
+      expect(response.body).to match('Validation failed: Name can\'t be blank')
+    end
   end
 
   describe 'DELETE /merchants' do
@@ -114,6 +134,13 @@ RSpec.describe 'Merchant API', type: :request do
       expect(Merchant.count).to eq(2)
       expect { Merchant.find(@merch1.id) }.to raise_error(ActiveRecord::RecordNotFound)
       expect { delete "/api/v1/merchants/#{@merch2.id}" }.to change(Merchant, :count).by(-1)
+    end
+
+    xit 'returns error if record doesn\'t exist' do
+      delete '/api/v1/merchants/100'
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
     end
   end
 end
