@@ -56,7 +56,7 @@ RSpec.describe 'Merchant API', type: :request do
     end
 
     it 'returns error when there is no merchant with that id' do
-      get "/api/v1/merchants/100"
+      get '/api/v1/merchants/100'
       expect(response).to have_http_status(404)
       expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
     end
@@ -103,14 +103,14 @@ RSpec.describe 'Merchant API', type: :request do
 
     it 'returns error if record doesn\'t exist' do
       params = { name: 'New Name' }
-      patch "/api/v1/merchants/100", params: params
+      patch '/api/v1/merchants/100', params: params
       expect(response).to_not be_successful
       expect(response).to have_http_status(404)
       expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
     end
 
     xit 'returns error when params are invalid' do
-      invalid_params = { }
+      invalid_params = {}
       patch "/api/v1/merchants/#{@merch1.id}", params: invalid_params
       expect(response).to_not be_successful
       expect(response).to have_http_status(422)
@@ -144,5 +144,3 @@ RSpec.describe 'Merchant API', type: :request do
     end
   end
 end
-
-# let!(:shelter1) { create(:shelter, name: 'Test Shelter 1') }
