@@ -103,10 +103,10 @@ RSpec.describe 'Merchant API', type: :request do
 
     it 'returns error if record doesn\'t exist' do
       params = { name: 'New Name' }
-      patch '/api/v1/merchants/100', params: params
+      patch '/api/v1/merchants/0', params: params
       expect(response).to_not be_successful
       expect(response).to have_http_status(404)
-      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=0')
     end
 
     xit 'returns error when params are invalid' do
@@ -137,10 +137,10 @@ RSpec.describe 'Merchant API', type: :request do
     end
 
     xit 'returns error if record doesn\'t exist' do
-      delete '/api/v1/merchants/100'
+      delete '/api/v1/merchants/0'
       expect(response).to_not be_successful
       expect(response).to have_http_status(404)
-      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=0')
     end
   end
 end

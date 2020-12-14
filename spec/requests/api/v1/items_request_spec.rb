@@ -126,4 +126,65 @@ RSpec.describe 'Item API', type: :request do
       expect(response.body).to match('Validation failed: Merchant must exist')
     end
   end
+
+  describe 'PATCH /items/:id' do
+    before :each do
+      @item = create(:item)
+    end
+
+    it 'can update an existing item' do
+      old_name = @item.name
+      new_name = { name: 'New Name' }
+      patch "/api/v1/items/#{@item.id}", params: new_name
+      new_item_info = Item.find_by(id: @item.id)
+
+      expect(response).to be_successful
+      expect(response).to have_http_status(204)
+      expect(new_item_info.name).to eq(new_name[:name])
+      expect(new_item_info.name).to_not eq(old_name)
+    end
+
+    it 'returns error if record doesn\'t exist' do
+      params = { name: 'New Name' }
+      patch '/api/v1/items/0', params: params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Item with \'id\'=0')
+    end
+
+    xit 'returns error when params are invalid' do
+      invalid_params = { name: ''}
+      patch "/api/v1/items/#{@item.id}", params: invalid_params
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(422)
+      expect(response.body).to match('Validation failed: Name can\'t be blank')
+    end
+  end
+
+  describe 'DELETE /items' do
+    before :each do
+      create_list(:item, 5)
+      @item1 = Item.first
+      @item2 = Item.last
+    end
+
+    it 'can destroy item1' do
+      expect(Item.count).to eq(5)
+      delete "/api/v1/items/#{@item1.id}"
+
+      expect(response).to be_successful
+      expect(response).to have_http_status(204)
+      expect(Item.count).to eq(4)
+      expect { Item.find(@item1.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { delete "/api/v1/items/#{@item2.id}" }.to change(Item, :count).by(-1)
+    end
+
+    xit 'returns error if record doesn\'t exist' do
+      require 'pry', binding.pry
+      delete '/api/v1/items/0'
+      # expect(response).to_not be_successful
+      expect(response).to have_http_status(404)
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=0')
+    end
+  end
 end

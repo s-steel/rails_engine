@@ -12,6 +12,16 @@ class Api::V1::ItemsController < ApplicationController
     json_response(item, :created)
   end
 
+  def update
+    json_response(Item.update(params[:id], item_params))
+    head :no_content
+  end
+
+  def destroy
+    json_response(Item.delete(params[:id]))
+    head :no_content
+  end
+
   private
 
   def item_params
