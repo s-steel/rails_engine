@@ -61,6 +61,48 @@ RSpec.describe 'Merchant API', type: :request do
     #   expect(response.body).to match(/Couldn't find Todo/)
     # end
   end
+
+  describe 'POST /merchants' do
+    before :each do
+      @merch_params = { name: 'Test Merchant' }
+    end
+
+    it 'can create a new merchant' do
+      post '/api/v1/merchants', params: @merch_params
+      merchant_info =  JSON.parse(response.body, symbolize_names: true)
+      expect(response).to be_successful
+      expect(merchant_info[:name]).to eq(@merch_params[:name])
+    end
+
+    # it 'another example test setup' do
+    #   merch_params = ({ name: 'Test Merchant' })
+    #   headers = {'CONTENT_TYPE' => 'applicaiton/json'}
+    #   post '/api/v1/merchants', headers: headers, params: JSON.generate(merchant: merch_params)
+    #   created_merch = Merchant.last
+    
+    #   expect(response).to be_successful
+    #   expect(created_merch.name).to eq(merch_params[:name])
+    # end
+    it 'will error out if request is invalid'
+  end
+
+  describe 'PATCH /merchants' do
+    before :each do
+      @merch1 = create(:merchant)
+    end
+
+    it 'can update an existing merchant' do 
+      old_name = @merch1.name
+      new_name = { name: 'New Name' }
+      patch "/api/v1/merchants'/#{@merch1.id}", params: @merch_params
+      new_merchant_info =  Merchant.find_by(id: @merch1.id)
+
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      expect(new_merchant_info.name).to_not eq(old_name)
+      expect(new_merchant_info.name).to eq(new_name)
+    end
+  end
 end
 
 # let!(:shelter1) { create(:shelter, name: 'Test Shelter 1') }
