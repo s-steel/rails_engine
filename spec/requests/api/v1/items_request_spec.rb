@@ -11,30 +11,31 @@ RSpec.describe 'Item API', type: :request do
       expect(response).to be_successful
       expect(response).to have_http_status(200)
       items = JSON.parse(response.body, symbolize_names: true)
+      items_data = items[:data]
       expect(items).to_not be_empty
-      expect(items.count).to eq(5)
+      expect(items_data.count).to eq(5)
 
-      items.each do |item|
+      items_data.each do |item|
         expect(item).to have_key(:id)
-        expect(item[:id]).to be_an(Integer)
+        expect(item[:id]).to be_an(String)
 
-        expect(item).to have_key(:name)
-        expect(item[:name]).to be_an(String)
+        expect(item).to have_key(:attributes)
+        expect(item[:attributes]).to be_a(Hash)
 
-        expect(item).to have_key(:description)
-        expect(item[:description]).to be_an(String)
+        expect(item).to have_key(:type)
+        expect(item[:type]).to be_an(String)
 
-        expect(item).to have_key(:unit_price)
-        expect(item[:unit_price]).to be_a(Float)
+        expect(item[:attributes]).to have_key(:name)
+        expect(item[:attributes][:name]).to be_an(String)
 
-        expect(item).to have_key(:merchant_id)
-        expect(item[:merchant_id]).to be_a(Integer)
+        expect(item[:attributes]).to have_key(:description)
+        expect(item[:attributes][:description]).to be_an(String)
 
-        expect(item).to have_key(:created_at)
-        expect(item[:created_at]).to be_an(String)
+        expect(item[:attributes]).to have_key(:unit_price)
+        expect(item[:attributes][:unit_price]).to be_a(Float)
 
-        expect(item).to have_key(:updated_at)
-        expect(item[:updated_at]).to be_an(String)
+        expect(item[:attributes]).to have_key(:merchant_id)
+        expect(item[:attributes][:merchant_id]).to be_a(Integer)
       end
     end
   end
@@ -49,28 +50,29 @@ RSpec.describe 'Item API', type: :request do
       expect(response).to be_successful
       expect(response).to have_http_status(200)
       item = JSON.parse(response.body, symbolize_names: true)
+      item_data = item[:data]
       expect(item).to_not be_empty
 
-      expect(item).to have_key(:id)
-      expect(item[:id]).to eq(@item.id)
+      expect(item_data).to have_key(:id)
+      expect(item_data[:id]).to eq(@item.id.to_s)
 
-      expect(item).to have_key(:name)
-      expect(item[:name]).to be_an(String)
+      expect(item_data).to have_key(:attributes)
+      expect(item_data[:attributes]).to be_a(Hash)
 
-      expect(item).to have_key(:description)
-      expect(item[:description]).to be_an(String)
+      expect(item_data).to have_key(:type)
+      expect(item_data[:type]).to be_a(String)
 
-      expect(item).to have_key(:unit_price)
-      expect(item[:unit_price]).to be_a(Float)
+      expect(item_data[:attributes]).to have_key(:name)
+      expect(item_data[:attributes][:name]).to be_an(String)
 
-      expect(item).to have_key(:merchant_id)
-      expect(item[:merchant_id]).to be_a(Integer)
+      expect(item_data[:attributes]).to have_key(:description)
+      expect(item_data[:attributes][:description]).to be_an(String)
 
-      expect(item).to have_key(:created_at)
-      expect(item[:created_at]).to be_an(String)
+      expect(item_data[:attributes]).to have_key(:unit_price)
+      expect(item_data[:attributes][:unit_price]).to be_a(Float)
 
-      expect(item).to have_key(:updated_at)
-      expect(item[:updated_at]).to be_an(String)
+      expect(item_data[:attributes]).to have_key(:merchant_id)
+      expect(item_data[:attributes][:merchant_id]).to be_a(Integer)
     end
 
     it 'returns error when there is no item with that id' do
@@ -94,10 +96,11 @@ RSpec.describe 'Item API', type: :request do
       item_info = JSON.parse(response.body, symbolize_names: true)
       expect(response).to be_successful
       expect(response).to have_http_status(201)
-      expect(item_info[:name]).to eq(@item_params[:name])
-      expect(item_info[:description]).to eq(@item_params[:description])
-      expect(item_info[:unit_price]).to eq(@item_params[:unit_price])
-      expect(item_info[:merchant_id]).to eq(@item_params[:merchant_id])
+      expect(item_info[:data][:type]).to eq('item')
+      expect(item_info[:data][:attributes][:name]).to eq(@item_params[:name])
+      expect(item_info[:data][:attributes][:description]).to eq(@item_params[:description])
+      expect(item_info[:data][:attributes][:unit_price]).to eq(@item_params[:unit_price])
+      expect(item_info[:data][:attributes][:merchant_id]).to eq(@item_params[:merchant_id])
     end
 
     it 'will error out if request is invalid' do
@@ -139,7 +142,7 @@ RSpec.describe 'Item API', type: :request do
       new_item_info = Item.find_by(id: @item.id)
 
       expect(response).to be_successful
-      expect(response).to have_http_status(204)
+      expect(response).to have_http_status(200)
       expect(new_item_info.name).to eq(new_name[:name])
       expect(new_item_info.name).to_not eq(old_name)
     end

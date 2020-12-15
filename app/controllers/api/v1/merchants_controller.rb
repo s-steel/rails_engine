@@ -4,7 +4,7 @@ class Api::V1::MerchantsController < ApplicationController
     if find_item.nil?
       json_response(MerchantSerializer.new(Merchant.all))
     else
-      json_response(@item.merchant)
+      json_response(MerchantSerializer.new(@item.merchant))
     end
   end
 
