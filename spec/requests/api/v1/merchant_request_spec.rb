@@ -12,20 +12,21 @@ RSpec.describe 'Merchant API', type: :request do
       expect(response).to have_http_status(200)
       merchants = JSON.parse(response.body, symbolize_names: true)
       expect(merchants).to_not be_empty
-      expect(merchants.count).to eq(3)
+      merchant_data = merchants[:data]
+      expect(merchant_data.count).to eq(3)
 
-      merchants.each do |merchant|
+      merchant_data.each do |merchant|
         expect(merchant).to have_key(:id)
-        expect(merchant[:id]).to be_an(Integer)
+        expect(merchant[:id]).to be_an(String)
 
-        expect(merchant).to have_key(:name)
-        expect(merchant[:name]).to be_an(String)
+        expect(merchant).to have_key(:attributes)
+        expect(merchant[:attributes]).to be_a(Hash)
 
-        expect(merchant).to have_key(:created_at)
-        expect(merchant[:created_at]).to be_an(String)
+        expect(merchant[:attributes]).to have_key(:name)
+        expect(merchant[:attributes][:name]).to be_an(String)
 
-        expect(merchant).to have_key(:updated_at)
-        expect(merchant[:updated_at]).to be_an(String)
+        expect(merchant).to have_key(:type)
+        expect(merchant[:type]).to be_an(String)
       end
     end
   end
@@ -41,24 +42,25 @@ RSpec.describe 'Merchant API', type: :request do
       expect(response).to have_http_status(200)
       merchant = JSON.parse(response.body, symbolize_names: true)
       expect(merchant).to_not be_empty
+      merchant_data = merchant[:data]
 
-      expect(merchant).to have_key(:id)
-      expect(merchant[:id]).to eq(@merch1.id)
+      expect(merchant_data).to have_key(:id)
+      expect(merchant_data[:id]).to eq("#{@merch1.id}")
 
-      expect(merchant).to have_key(:name)
-      expect(merchant[:name]).to be_an(String)
+      expect(merchant_data).to have_key(:attributes)
+      expect(merchant_data[:attributes]).to be_a(Hash)
 
-      expect(merchant).to have_key(:created_at)
-      expect(merchant[:created_at]).to be_an(String)
+      expect(merchant_data[:attributes]).to have_key(:name)
+      expect(merchant_data[:attributes][:name]).to be_an(String)
 
-      expect(merchant).to have_key(:updated_at)
-      expect(merchant[:updated_at]).to be_an(String)
+      expect(merchant_data).to have_key(:type)
+      expect(merchant_data[:type]).to be_an(String)
     end
 
     it 'returns error when there is no merchant with that id' do
-      get '/api/v1/merchants/100'
+      get '/api/v1/merchants/0'
       expect(response).to have_http_status(404)
-      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=100')
+      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=0')
     end
   end
 
@@ -72,7 +74,7 @@ RSpec.describe 'Merchant API', type: :request do
       merchant_info = JSON.parse(response.body, symbolize_names: true)
       expect(response).to be_successful
       expect(response).to have_http_status(201)
-      expect(merchant_info[:name]).to eq(@merch_params[:name])
+      expect(merchant_info[:data][:attributes][:name]).to eq(@merch_params[:name])
     end
 
     it 'will error out if request is invalid' do
@@ -96,7 +98,7 @@ RSpec.describe 'Merchant API', type: :request do
       new_merchant_info = Merchant.find_by(id: @merch1.id)
 
       expect(response).to be_successful
-      expect(response).to have_http_status(204)
+      expect(response).to have_http_status(200)
       expect(new_merchant_info.name).to eq(new_name[:name])
       expect(new_merchant_info.name).to_not eq(old_name)
     end

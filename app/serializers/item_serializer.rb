@@ -1,0 +1,3 @@
+class ItemSerializer
+  
+end

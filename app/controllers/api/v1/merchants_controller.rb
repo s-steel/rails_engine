@@ -2,24 +2,23 @@ class Api::V1::MerchantsController < ApplicationController
   before_action :find_item, only: [:index]
   def index
     if find_item.nil?
-      json_response(Merchant.all)
+      json_response(MerchantSerializer.new(Merchant.all))
     else
       json_response(@item.merchant)
     end
   end
 
   def show
-    json_response(Merchant.find(params[:id]))
+    json_response(MerchantSerializer.new(Merchant.find(params[:id])))
   end
 
   def create
     merchant = Merchant.create!(merchant_params)
-    json_response(merchant, :created)
+    json_response(MerchantSerializer.new(merchant), :created)
   end
 
   def update
-    json_response(Merchant.update(params[:id], merchant_params))
-    head :no_content
+    json_response(MerchantSerializer.new(Merchant.update(params[:id], merchant_params)))
   end
 
   def destroy
