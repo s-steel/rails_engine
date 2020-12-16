@@ -68,9 +68,9 @@ RSpec.describe 'Item Search API', type: :request do
 
   describe 'GET /items/find_all?<attribute>=<value>' do
     before :each do
-      create(:item)
       @item1 = create(:item, name: 'Wooden Pants')
       @item2 = create(:item, name: 'Woodchuck Chucker')
+      other_item = create(:item, name: 'Wooho Doah')
     end
 
     it 'finds all items that meet that criteria' do
