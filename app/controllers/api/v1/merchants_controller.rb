@@ -27,7 +27,9 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def find
-    require 'pry', binding.pry
+    attribute = params.keys[0]
+    value = params.values[0]
+    json_response(MerchantSerializer.new(Merchant.search_one(attribute, value)))
   end
 
   private
