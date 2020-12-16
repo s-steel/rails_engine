@@ -96,17 +96,44 @@ RSpec.describe 'Business Intelligence API', type: :request do
 
   describe 'GET /merchants/:id/revenue' do
     before :each do
-      get '/api/v1/merchants/1/revenue'
+      @merch1 = create(:merchant)
+      invoice1 = create(:invoice, merchant_id: @merch1.id)
+      item1 = create(:item)
+      invoice1.invoice_items.create(item_id: item1.id, quantity: 40, unit_price: 100)
+      invoice1.transactions.create(credit_card_number: 1234567823456789, credit_card_expiration_date: '04/23', result: 'success')
+
+      @merch2 = create(:merchant)
+      invoice2 = create(:invoice, merchant_id: @merch2.id)
+      item2 = create(:item)
+      invoice2.invoice_items.create(item_id: item2.id, quantity: 20, unit_price: 100)
+      invoice2.transactions.create(credit_card_number: 1234567823456789, credit_card_expiration_date: '04/23', result: 'success')
+
+      @merch3 = create(:merchant)
+      invoice3 = create(:invoice, merchant_id: @merch3.id)
+      item3 = create(:item)
+      invoice3.invoice_items.create(item_id: item3.id, quantity: 10, unit_price: 100)
+      invoice3.transactions.create(credit_card_number: 1234567823456789, credit_card_expiration_date: '04/23', result: 'success')
     end
 
     it 'returns revenue for an individual merchant' do
-      get '/api/v1/merchants/1/revenue'
+      get "/api/v1/merchants/#{@merch1.id}/revenue"
       expect(response).to be_successful
       expect(response).to have_http_status(200)
-      merchants = JSON.parse(response.body, symbolize_names: true)
-      expect(merchants).to_not be_empty
-      merchants_data = merchants[:data]
-      expect(merchants_data.count).to eq(1)
+      merchant = JSON.parse(response.body, symbolize_names: true)
+      expect(merchant).to_not be_empty
+      merchant_data = merchant[:data]
+      expect(merchant.count).to eq(1)
+
+      expect(merchant_data).to have_key(:id)
+      expect(merchant_data[:id]).to be_nil
+
+      expect(merchant_data).to have_key(:attributes)
+      expect(merchant_data[:attributes]).to be_a(Hash)
+
+      expect(merchant_data[:attributes]).to have_key(:revenue)
+      expect(merchant_data[:attributes][:revenue]).to be_a(Float)
+
+      expect(merchant_data[:attributes][:revenue]).to eq(40 * 100)
     end
   end
 end
