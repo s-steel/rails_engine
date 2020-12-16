@@ -33,5 +33,6 @@ class Merchant < ApplicationRecord
       .merge(Invoice.shipped)
       .group(:id)
       .where(id: merchant_id)
+      .first
   end
 end
