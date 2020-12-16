@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       resources :items do
         resources :merchants, only: [:index]
       end
+
+      get 'merchants/find?:attribute=:value', to: 'merchants#find'
     end
   end
 end

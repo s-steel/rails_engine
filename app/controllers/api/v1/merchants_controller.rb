@@ -26,6 +26,10 @@ class Api::V1::MerchantsController < ApplicationController
     head :no_content
   end
 
+  def find
+    require 'pry', binding.pry
+  end
+
   private
 
   def merchant_params
