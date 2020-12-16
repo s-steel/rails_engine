@@ -6,6 +6,9 @@ RSpec.describe 'Merchant Items API', type: :request do
       @merchant = create(:merchant, :with_items)
       @merchant2 = create(:merchant, :with_items)
       @other_item = @merchant2.items.first
+      @other_item[:name] = "asdfg"
+      @other_item[:description] = "xcvbnm"
+      @other_item[:unit_price] = 100_000
     end
     
     it 'sends list of all items from one merchant' do

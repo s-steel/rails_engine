@@ -4,11 +4,11 @@ RSpec.describe 'Item Search API', type: :request do
   describe 'GET /items/find?<attribute>=<value>' do
     before :each do
       create_list(:item, 3)
-      @solo_item = create(:item, name: 'Wooden Pants', description: 'What are these?', unit_price: 50.32)
+      @solo_item = create(:item, name: 'AsDfgHjkl', description: 'What are these?', unit_price: 100_000)
     end
 
     it 'returns single item that matches criteria' do
-      get '/api/v1/items/find?name=wood'
+      get '/api/v1/items/find?name=fghj'
       expect(response).to be_successful
       expect(response).to have_http_status(200)
       item = JSON.parse(response.body, symbolize_names: true)
