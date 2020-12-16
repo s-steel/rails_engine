@@ -12,21 +12,22 @@ RSpec.describe 'Items Merchants API', type: :request do
       expect(response).to be_successful
       expect(response).to have_http_status(200)
       merchant = JSON.parse(response.body, symbolize_names: true)
+      merchant_data = merchant[:data]
       expect(merchant).to_not be_empty
 
-      expect(merchant).to have_key(:id)
-      expect(merchant[:id]).to be_an(Integer)
-      expect(merchant[:id]).to eq(@merchant.id)
+      expect(merchant_data).to have_key(:id)
+      expect(merchant_data[:id]).to be_a(String)
+      expect(merchant_data[:id]).to eq(@merchant.id.to_s)
 
-      expect(merchant).to have_key(:name)
-      expect(merchant[:name]).to be_an(String)
-      expect(merchant[:name]).to eq(@merchant.name)
+      expect(merchant_data).to have_key(:attributes)
+      expect(merchant_data[:id]).to eq(@merchant.id.to_s)
 
-      expect(merchant).to have_key(:created_at)
-      expect(merchant[:created_at]).to be_an(String)
+      expect(merchant_data).to have_key(:type)
+      expect(merchant_data[:type]).to be_a(String)
 
-      expect(merchant).to have_key(:updated_at)
-      expect(merchant[:updated_at]).to be_an(String)
+      expect(merchant_data[:attributes]).to have_key(:name)
+      expect(merchant_data[:attributes][:name]).to be_an(String)
+      expect(merchant_data[:attributes][:name]).to eq(@merchant.name)
     end
 
     it 'returns error when record does not exist' do
