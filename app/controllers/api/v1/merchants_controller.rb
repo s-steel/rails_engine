@@ -50,10 +50,6 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def find_item
-    if params[:item_id]
-      @item = Item.find(params[:item_id])
-    else
-      nil
-    end
+    return @item = Item.find(params[:item_id]) if params[:item_id]
   end
 end

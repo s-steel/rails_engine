@@ -6,4 +6,6 @@ class Invoice < ApplicationRecord
   has_many :transactions, dependent: :destroy
 
   validates_presence_of :status
+
+  scope :shipped, -> { where(status: 'shipped') }
 end

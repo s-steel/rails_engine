@@ -1,6 +1,7 @@
 class Merchant < ApplicationRecord
   has_many :items, dependent: :destroy
   has_many :invoices
+  has_many :invoice_items, through: :invoices
   has_many :customers, through: :invoices
 
   validates_presence_of :name
@@ -16,6 +17,12 @@ class Merchant < ApplicationRecord
   end
 
   def self.most_revenue(limit = 10)
-    # require 'pry', binding.pry
+    select('merchants.*, SUM(invoice_items.unit_price * invoice_items.quantity)  AS revenue')
+      .joins(invoices: [:invoice_items, :transactions])
+      .merge(Transaction.successful)
+      .merge(Invoice.shipped)
+      .group(:id)
+      .order('revenue DESC')
+      .limit(limit)
   end
 end
