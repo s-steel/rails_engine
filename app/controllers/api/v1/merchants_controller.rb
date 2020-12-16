@@ -38,11 +38,6 @@ class Api::V1::MerchantsController < ApplicationController
     json_response(MerchantSerializer.new(Merchant.search_all(attribute, value)))
   end
 
-  def most_revenue
-    limit = params[:quantity].to_i
-    json_response(MerchantSerializer.new(Merchant.most_revenue(limit)))
-  end
-
   private
 
   def merchant_params
