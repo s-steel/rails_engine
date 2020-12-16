@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       scope :items do
-        get '/find', to: 'items#find'
-        get '/find_all', to: 'items#find_all'
+        get '/find', to: 'items/search#show'
+        get '/find_all', to: 'items/search#index'
       end
       scope :merchants do
         get '/find', to: 'merchants/search#show'
