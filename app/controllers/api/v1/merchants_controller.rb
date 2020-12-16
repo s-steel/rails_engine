@@ -32,6 +32,12 @@ class Api::V1::MerchantsController < ApplicationController
     json_response(MerchantSerializer.new(Merchant.search_one(attribute, value)))
   end
 
+  def find_all
+    attribute = params.keys[0]
+    value = params.values[0]
+    json_response(MerchantSerializer.new(Merchant.search_all(attribute, value)))
+  end
+
   private
 
   def merchant_params
