@@ -45,7 +45,7 @@ RSpec.describe 'Merchant API', type: :request do
       merchant_data = merchant[:data]
 
       expect(merchant_data).to have_key(:id)
-      expect(merchant_data[:id]).to eq("#{@merch1.id}")
+      expect(merchant_data[:id]).to eq(@merch1.id.to_s)
 
       expect(merchant_data).to have_key(:attributes)
       expect(merchant_data[:attributes]).to be_a(Hash)

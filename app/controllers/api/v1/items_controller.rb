@@ -27,6 +27,18 @@ class Api::V1::ItemsController < ApplicationController
     head :no_content
   end
 
+  def find
+    attribute = params.keys[0]
+    value = params.values[0]
+    json_response(ItemSerializer.new(Item.search_one(attribute, value)))
+  end
+
+  def find_all
+    attribute = params.keys[0]
+    value = params.values[0]
+    json_response(ItemSerializer.new(Item.search_all(attribute, value)))
+  end
+
   private
 
   def item_params

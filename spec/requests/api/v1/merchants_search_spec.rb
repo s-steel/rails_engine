@@ -29,7 +29,7 @@ RSpec.describe 'Merchant Search API', type: :request do
       expect(merchant_data[:attributes][:name]).to eq('Ring World')
     end
 
-    xit 'can find merchant using created_at' do
+    xit 'can find merchant using updated_at' do
       get '/api/v1/merchants/find?updated_at=44:45.23873'
       expect(response).to be_successful
       expect(response).to have_http_status(200)
@@ -73,6 +73,18 @@ RSpec.describe 'Merchant Search API', type: :request do
         expect(merchant).to have_key(:type)
         expect(merchant[:type]).to be_an(String)
       end
+    end
+
+    xit 'can find merchant using updated_at' do
+      get '/api/v1/merchants/find_all?updated_at=44:45'
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      merchant = JSON.parse(response.body, symbolize_names: true)
+      expect(merchant).to_not be_empty
+      merchant_data = merchant[:data]
+      expect(merchant.count).to eq(1)
+
+      # expect(merchant_data[:attributes][:name]).to eq('Fahey-Stiedemann')
     end
   end
 end
