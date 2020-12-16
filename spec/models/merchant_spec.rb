@@ -56,5 +56,22 @@ describe Merchant, type: :model do
       results = Merchant.revenue(@merch2.id)
       expect(results.id).to eq(@merch2.id)
     end
+
+    it '.search_one' do
+      merch1 = create(:merchant, name: 'Other School')
+      merch2 = create(:merchant, name: 'Party House')
+      merch3 = create(:merchant, name: 'Ring World')
+      results = Merchant.search_one('name', 'ring')
+      expect(results.id).to eq(merch3.id)
+    end
+
+    it '.search_all' do
+      merch1 = create(:merchant, name: 'Turing School')
+      merch2 = create(:merchant, name: 'Party House')
+      merch3 = create(:merchant, name: 'Ring World')
+      results = Merchant.search_all('name', 'ring')
+      expect(results[0].id).to eq(merch1.id)
+      expect(results[1].id).to eq(merch3.id)
+    end
   end
 end
