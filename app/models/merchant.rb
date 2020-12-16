@@ -12,6 +12,10 @@ class Merchant < ApplicationRecord
 
   def self.search_all(attribute, value)
     where("lower(#{attribute}) like ?", "%#{value.downcase}%")
-    # where("#{attribute} like ?", "%#{value}%").first
+    # where("#{attribute} like ?", "%#{value}%")
+  end
+
+  def self.most_revenue(limit = 10)
+    # require 'pry', binding.pry
   end
 end

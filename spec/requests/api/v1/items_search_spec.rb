@@ -17,7 +17,7 @@ RSpec.describe 'Item Search API', type: :request do
       expect(item.count).to eq(1)
 
       expect(item_data).to have_key(:id)
-      expect(item_data[:id]).to eq(@solo_item.id.to_s)
+      expect(item_data[:id]).to be_a(String)
 
       expect(item_data).to have_key(:attributes)
       expect(item_data[:attributes]).to be_a(Hash)
@@ -35,6 +35,21 @@ RSpec.describe 'Item Search API', type: :request do
       expect(item_data[:attributes][:unit_price]).to eq(@solo_item.unit_price)
 
       expect(item_data[:attributes]).to have_key(:merchant_id)
+      expect(item_data[:attributes][:merchant_id]).to be_a(Integer)
+    end
+
+    it 'can search using other criteria' do 
+      get '/api/v1/items/find?description=hese?'
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      item = JSON.parse(response.body, symbolize_names: true)
+      expect(item).to_not be_empty
+      item_data = item[:data]
+      expect(item.count).to eq(1)
+
+      expect(item_data[:attributes][:name]).to eq(@solo_item.name)
+      expect(item_data[:attributes][:description]).to eq(@solo_item.description)
+      expect(item_data[:attributes][:unit_price]).to eq(@solo_item.unit_price)
       expect(item_data[:attributes][:merchant_id]).to be_a(Integer)
     end
 
