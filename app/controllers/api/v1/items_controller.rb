@@ -19,24 +19,11 @@ class Api::V1::ItemsController < ApplicationController
 
   def update
     json_response(ItemSerializer.new(Item.update(params[:id], item_params)))
-    # head :no_content
   end
 
   def destroy
     json_response(Item.delete(params[:id]))
     head :no_content
-  end
-
-  def find
-    attribute = params.keys[0]
-    value = params.values[0]
-    json_response(ItemSerializer.new(Item.search_one(attribute, value)))
-  end
-
-  def find_all
-    attribute = params.keys[0]
-    value = params.values[0]
-    json_response(ItemSerializer.new(Item.search_all(attribute, value)))
   end
 
   private
@@ -49,10 +36,6 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def find_merchant
-    if params[:merchant_id]
-      @merchant = Merchant.find(params[:merchant_id])
-    else
-      nil
-    end
+    return @merchant = Merchant.find(params[:merchant_id]) if params[:merchant_id]
   end
 end

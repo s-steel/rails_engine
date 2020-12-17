@@ -154,14 +154,6 @@ RSpec.describe 'Item API', type: :request do
       expect(response).to have_http_status(404)
       expect(response.body).to match('Couldn\'t find Item with \'id\'=0')
     end
-
-    xit 'returns error when params are invalid' do
-      invalid_params = { name: ''}
-      patch "/api/v1/items/#{@item.id}", params: invalid_params
-      expect(response).to_not be_successful
-      expect(response).to have_http_status(422)
-      expect(response.body).to match('Validation failed: Name can\'t be blank')
-    end
   end
 
   describe 'DELETE /items' do
@@ -180,14 +172,6 @@ RSpec.describe 'Item API', type: :request do
       expect(Item.count).to eq(4)
       expect { Item.find(@item1.id) }.to raise_error(ActiveRecord::RecordNotFound)
       expect { delete "/api/v1/items/#{@item2.id}" }.to change(Item, :count).by(-1)
-    end
-
-    xit 'returns error if record doesn\'t exist' do
-      require 'pry', binding.pry
-      delete '/api/v1/items/0'
-      # expect(response).to_not be_successful
-      expect(response).to have_http_status(404)
-      expect(response.body).to match('Couldn\'t find Merchant with \'id\'=0')
     end
   end
 end

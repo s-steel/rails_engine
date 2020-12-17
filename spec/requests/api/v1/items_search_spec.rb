@@ -4,11 +4,11 @@ RSpec.describe 'Item Search API', type: :request do
   describe 'GET /items/find?<attribute>=<value>' do
     before :each do
       create_list(:item, 3)
-      @solo_item = create(:item, name: 'Wooden Pants', description: 'What are these?', unit_price: 50.32)
+      @solo_item = create(:item, name: 'AsDfgHjkl', description: 'What are these?', unit_price: 100_000)
     end
 
     it 'returns single item that matches criteria' do
-      get '/api/v1/items/find?name=wood'
+      get '/api/v1/items/find?name=fghj'
       expect(response).to be_successful
       expect(response).to have_http_status(200)
       item = JSON.parse(response.body, symbolize_names: true)
@@ -17,7 +17,7 @@ RSpec.describe 'Item Search API', type: :request do
       expect(item.count).to eq(1)
 
       expect(item_data).to have_key(:id)
-      expect(item_data[:id]).to eq(@solo_item.id.to_s)
+      expect(item_data[:id]).to be_a(String)
 
       expect(item_data).to have_key(:attributes)
       expect(item_data[:attributes]).to be_a(Hash)
@@ -38,6 +38,21 @@ RSpec.describe 'Item Search API', type: :request do
       expect(item_data[:attributes][:merchant_id]).to be_a(Integer)
     end
 
+    it 'can search using other criteria' do 
+      get '/api/v1/items/find?description=hese?'
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      item = JSON.parse(response.body, symbolize_names: true)
+      expect(item).to_not be_empty
+      item_data = item[:data]
+      expect(item.count).to eq(1)
+
+      expect(item_data[:attributes][:name]).to eq(@solo_item.name)
+      expect(item_data[:attributes][:description]).to eq(@solo_item.description)
+      expect(item_data[:attributes][:unit_price]).to eq(@solo_item.unit_price)
+      expect(item_data[:attributes][:merchant_id]).to be_a(Integer)
+    end
+
     xit 'can find item using updated_at' do
       get '/api/v1/merchants/find?updated_at=44:45.23873'
       expect(response).to be_successful
@@ -53,9 +68,9 @@ RSpec.describe 'Item Search API', type: :request do
 
   describe 'GET /items/find_all?<attribute>=<value>' do
     before :each do
-      create(:item)
       @item1 = create(:item, name: 'Wooden Pants')
       @item2 = create(:item, name: 'Woodchuck Chucker')
+      create(:item, name: 'Wooho Doah')
     end
 
     it 'finds all items that meet that criteria' do

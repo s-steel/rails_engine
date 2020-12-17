@@ -26,16 +26,9 @@ class Api::V1::MerchantsController < ApplicationController
     head :no_content
   end
 
-  def find
-    attribute = params.keys[0]
-    value = params.values[0]
-    json_response(MerchantSerializer.new(Merchant.search_one(attribute, value)))
-  end
-
-  def find_all
-    attribute = params.keys[0]
-    value = params.values[0]
-    json_response(MerchantSerializer.new(Merchant.search_all(attribute, value)))
+  def total_items
+    limit = params[:quantity].to_i
+    json_response(MerchantSerializer.new(Merchant.total_items(limit)))
   end
 
   private
@@ -45,10 +38,6 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def find_item
-    if params[:item_id]
-      @item = Item.find(params[:item_id])
-    else
-      nil
-    end
+    return @item = Item.find(params[:item_id]) if params[:item_id]
   end
 end
