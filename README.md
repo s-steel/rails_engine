@@ -34,7 +34,7 @@ Below are the endpoints and example responses for the API.
 ## Merchants
 
 #### Find All Merchants: `GET /api/v1/merchants`
-example:
+example: `http://localhost:3000/api/v1/merchants`
 ```
 {
     "data": [
@@ -105,7 +105,7 @@ example:  This will not return any data, but you will receive a 204 status to co
 ## Items
 
 #### Find All Items: `GET /api/v1/items`
-example:
+example: `http://localhost:3000/api/v1/items`
 ```
 {
     "data": [
