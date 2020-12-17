@@ -74,19 +74,6 @@ RSpec.describe 'Business Intelligence API', type: :request do
 
   describe 'GET /merchants/most_items?quantity=x' do
     before :each do
-      # @merch1 = create(:merchant, :with_items)
-      # @merch2 = create(:merchant, :with_items)
-      # @merch3 = create(:merchant, :with_items)
-      # item1 = @merch1.items[0]
-      # item2 = @merch2.items[0]
-      # item3 = @merch3.items[0]
-      # create(:invoice_item, item_id: item1.id, quantity: 20)
-      # create(:invoice_item, item_id: item1.id, quantity: 10)
-      # create(:invoice_item, item_id: item2.id, quantity: 50)
-      # create(:invoice_item, item_id: item2.id, quantity: 5)
-      # create(:invoice_item, item_id: item3.id, quantity: 10)
-      # create(:invoice_item, item_id: item3.id, quantity: 32)
-
       @merch1 = create(:merchant)
       invoice1 = create(:invoice, merchant_id: @merch1.id)
       item1 = create(:item)
@@ -142,6 +129,16 @@ RSpec.describe 'Business Intelligence API', type: :request do
 
       expect(one_merchant[:attributes]).to have_key(:name)
       expect(one_merchant[:attributes][:name]).to be_a(String)
+    end
+
+    it 'can return a variable number of merchants for total items' do
+      get '/api/v1/merchants/most_items?quantity=1'
+      merchants_data = JSON.parse(response.body, symbolize_names: true)[:data]
+      expect(merchants_data.count).to eq(1)
+
+      get '/api/v1/merchants/most_items?quantity=3'
+      merchants_data = JSON.parse(response.body, symbolize_names: true)[:data]
+      expect(merchants_data.count).to eq(3)
     end
   end
 

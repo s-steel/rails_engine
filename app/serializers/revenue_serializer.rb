@@ -1,6 +1,6 @@
 class RevenueSerializer
   def self.revenue(object)
-    if object.class == Float
+    if object.instance_of?(Float)
       {
         "data": {
           "id": nil,
