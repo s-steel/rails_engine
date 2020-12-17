@@ -33,71 +33,114 @@ Below are the endpoints and example responses for the API.
 
 ## Merchants
 
-##### Find All Merchants: `GET /api/v1/merchants`
+#### Find All Merchants: `GET /api/v1/merchants`
+example:
+```
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "merchant",
+            "attributes": {
+                "name": "Schroeder-Jerde"
+            }
+        },
+        {
+            "id": "2",
+            "type": "merchant",
+            "attributes": {
+                "name": "Klein, Rempel and Jones"
+            }
+        }
+      ]
+    }
+```
+        
+
+#### Find one Merchant: `GET /api/v1/merchants/:id`
+example: `http://localhost:3000/api/v1/merchants/5`
+```
+{
+    "data": {
+        "id": "5",
+        "type": "merchant",
+        "attributes": {
+            "name": "Williamson Group"
+        }
+    }
+}
+```
+
+#### Create a Merchant: `POST /api/v1/merchants`
 example:
 
-##### Find one Merchant: `GET /api/v1/merchants/:id`
+#### Update a Merchant: `PATCH /api/v1/merchants/:id`
 example:
 
-##### Create a Merchant: `POST /api/v1/merchants`
-example:
-
-##### Update a Merchant: `PATCH /api/v1/merchants/:id`
-example:
-
-##### Delete a Merchant: `DELETE /api/v1/merchants/:id`
+#### Delete a Merchant: `DELETE /api/v1/merchants/:id`
 example:  This will not return any data, but you will receive a 204 status to confirm the request processed successfully.
 
 ## Items
 
-##### Find All Items: `GET /api/v1/items`
+#### Find All Items: `GET /api/v1/items`
 example:
 
-##### Find one Item: `GET /api/v1/items/:id`
+#### Find one Item: `GET /api/v1/items/:id`
 example:
 
-##### Create an Item: `POST /api/v1/items`
+#### Create an Item: `POST /api/v1/items`
 example:
 
-##### Update an Item: `PATCH /api/v1/items/:id`
+#### Update an Item: `PATCH /api/v1/items/:id`
 example:
 
-##### Delete an Item: `DELETE /api/v1/items/:id`
+#### Delete an Item: `DELETE /api/v1/items/:id`
 example:  This will not return any data, but you will receive a 204 status to confirm the request processed successfully.
 
 ## Relationships
 
-##### All items associated with a merchant: `GET /api/v1/merchants/:id/items`
+#### All items associated with a merchant: `GET /api/v1/merchants/:id/items`
 example:
 
-##### The merchant associated with an item: `GET /api/v1/items/:id/merchants`
+#### The merchant associated with an item: `GET /api/v1/items/:id/merchants`
 example:
 
 ## Merchant Search
 
-##### Return a single record that matches criteria: `GET /api/v1/merchants/find?<attribute>=<value>`
+#### Return a single record that matches criteria: `GET /api/v1/merchants/find?<attribute>=<value>`
 example:
 
-##### Return all records that match criteria: `GET /api/v1/merchants/find_all?<attribute>=<value>`
+#### Return all records that match criteria: `GET /api/v1/merchants/find_all?<attribute>=<value>`
 example:
 
 ## Item Search
 
-##### Return a single record that matches criteria: `GET /api/v1/items/find?<attribute>=<value>`
+#### Return a single record that matches criteria: `GET /api/v1/items/find?<attribute>=<value>`
 example:
 
-##### Return all records that match criteria: `GET /api/v1/items/find_all?<attribute>=<value>`
+#### Return all records that match criteria: `GET /api/v1/items/find_all?<attribute>=<value>`
 example:
 
 ## Business Intelligence
 
-##### Return variable munber of merchants ranked by total revenue: `GET /api/v1/merchants/most_revenue?quantity=x`
+#### Return variable munber of merchants ranked by total revenue: `GET /api/v1/merchants/most_revenue?quantity=x`
 example:
 
-##### Return variable number of merchants ranked by total items sold: `GET /api/v1/merchants/most_items?quantity=x`
+#### Return variable number of merchants ranked by total items sold: `GET /api/v1/merchants/most_items?quantity=x`
 example:
 
-##### Return total revenue across merchants between dates: `GET /api/v1/revenue?start=<start_date>&end=<end_date>`
+#### Return total revenue across merchants between dates: `GET /api/v1/revenue?start=<start_date>&end=<end_date>`
 example:
 
-##### Return the total revenue for a single merchant: `GET /api/v1/merchants/:id/revenue`
+#### Return the total revenue for a single merchant: `GET /api/v1/merchants/:id/revenue`
+example: `http://localhost:3000/api/v1/merchants/1/revenue`
+```
+{
+    "data": {
+        "id": null,
+        "attributes": {
+            "revenue": 528774.6400000005
+        }
+    }
+}
+```
