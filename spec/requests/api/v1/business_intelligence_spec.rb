@@ -74,17 +74,74 @@ RSpec.describe 'Business Intelligence API', type: :request do
 
   describe 'GET /merchants/most_items?quantity=x' do
     before :each do
-      get '/api/v1/merchants/most_items?quantity=2'
+      # @merch1 = create(:merchant, :with_items)
+      # @merch2 = create(:merchant, :with_items)
+      # @merch3 = create(:merchant, :with_items)
+      # item1 = @merch1.items[0]
+      # item2 = @merch2.items[0]
+      # item3 = @merch3.items[0]
+      # create(:invoice_item, item_id: item1.id, quantity: 20)
+      # create(:invoice_item, item_id: item1.id, quantity: 10)
+      # create(:invoice_item, item_id: item2.id, quantity: 50)
+      # create(:invoice_item, item_id: item2.id, quantity: 5)
+      # create(:invoice_item, item_id: item3.id, quantity: 10)
+      # create(:invoice_item, item_id: item3.id, quantity: 32)
+
+      @merch1 = create(:merchant)
+      invoice1 = create(:invoice, merchant_id: @merch1.id)
+      item1 = create(:item)
+      invoice1.invoice_items.create(item_id: item1.id,
+                                    quantity: 20,
+                                    unit_price: 100)
+      invoice1.transactions.create(credit_card_number: 1_234_567_823_456_789,
+                                   credit_card_expiration_date: '04/23',
+                                   result: 'success')
+
+      @merch2 = create(:merchant)
+      invoice2 = create(:invoice, merchant_id: @merch2.id)
+      item2 = create(:item)
+      invoice2.invoice_items.create(item_id: item2.id,
+                                    quantity: 50,
+                                    unit_price: 100)
+      invoice2.transactions.create(credit_card_number: 1_234_567_823_456_789,
+                                   credit_card_expiration_date: '04/23',
+                                   result: 'success')
+
+      @merch3 = create(:merchant)
+      invoice3 = create(:invoice, merchant_id: @merch3.id)
+      item3 = create(:item)
+      invoice3.invoice_items.create(item_id: item3.id,
+                                    quantity: 32,
+                                    unit_price: 100)
+      invoice3.transactions.create(credit_card_number: 1_234_567_823_456_789,
+                                   credit_card_expiration_date: '04/23',
+                                   result: 'success')
     end
 
-    xit 'returns merchants based on total items' do
+    it 'returns merchants based on total items' do
+      get '/api/v1/merchants/most_items?quantity=2'
       expect(response).to be_successful
       expect(response).to have_http_status(200)
       merchants = JSON.parse(response.body, symbolize_names: true)
       expect(merchants).to_not be_empty
       merchants_data = merchants[:data]
+
       expect(merchants_data.count).to eq(2)
-      # require 'pry', binding.pry
+      expect(merchants_data[0][:id]).to eq(@merch2.id.to_s)
+      expect(merchants_data[1][:id]).to eq(@merch3.id.to_s)
+
+      one_merchant = merchants_data.first
+      expect(one_merchant).to have_key(:id)
+      expect(one_merchant[:id]).to be_a(String)
+
+      expect(one_merchant).to have_key(:type)
+      expect(one_merchant[:type]).to be_a(String)
+
+      expect(one_merchant).to have_key(:attributes)
+      expect(one_merchant[:attributes]).to be_a(Hash)
+
+      expect(one_merchant[:attributes]).to have_key(:name)
+      expect(one_merchant[:attributes][:name]).to be_a(String)
     end
   end
 
