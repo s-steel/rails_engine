@@ -8,4 +8,8 @@ class Invoice < ApplicationRecord
   validates_presence_of :status
 
   scope :shipped, -> { where(status: 'shipped') }
+
+  def self.revenue_by_dates(start_date, end_date)
+    require 'pry', binding.pry
+  end
 end

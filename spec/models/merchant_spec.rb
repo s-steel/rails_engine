@@ -19,8 +19,9 @@ describe Merchant, type: :model do
       item1 = create(:item)
       invoice1.invoice_items.create(item_id: item1.id,
                                     quantity: 40,
-                                    unit_price: 100)
-      invoice1.transactions.create(credit_card_number: 1234567823456789,
+                                    unit_price: 100,
+                                    created_at: '2012-08-27 14:54:09')
+      invoice1.transactions.create(credit_card_number: 1_234_567_823_456_789,
                                    credit_card_expiration_date: '04/23',
                                    result: 'success')
 
@@ -29,8 +30,9 @@ describe Merchant, type: :model do
       item2 = create(:item)
       invoice2.invoice_items.create(item_id: item2.id,
                                     quantity: 10,
-                                    unit_price: 100)
-      invoice2.transactions.create(credit_card_number: 1234567823456789,
+                                    unit_price: 100,
+                                    created_at: '2012-04-27 14:54:09')
+      invoice2.transactions.create(credit_card_number: 1_234_567_823_456_789,
                                    credit_card_expiration_date: '04/23',
                                    result: 'success')
 
@@ -39,8 +41,9 @@ describe Merchant, type: :model do
       item3 = create(:item)
       invoice3.invoice_items.create(item_id: item3.id,
                                     quantity: 20,
-                                    unit_price: 100)
-      invoice3.transactions.create(credit_card_number: 1234567823456789,
+                                    unit_price: 100,
+                                    created_at: '2012-03-11 14:54:09')
+      invoice3.transactions.create(credit_card_number: 1_234_567_823_456_789,
                                    credit_card_expiration_date: '04/23',
                                    result: 'success')
     end

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      get '/revenue', to: 'invoices/revenue#revenue_by_dates'
       scope :items do
         get '/find', to: 'items/search#show'
         get '/find_all', to: 'items/search#index'

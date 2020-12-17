@@ -88,11 +88,56 @@ RSpec.describe 'Business Intelligence API', type: :request do
     end
   end
 
-  # describe 'GET /revenue?start=<start_date>&end=<end_date>' do
-  #   before :each do
-  #     get '/api/v1/revenue?start=2012-03-09&end=2012-03-24'
-  #   end
-  # end
+  describe 'GET /revenue?start=<start_date>&end=<end_date>' do
+    before :each do
+      @merch1 = create(:merchant)
+      invoice1 = create(:invoice, 
+                        merchant_id: @merch1.id, 
+                        created_at: '2012-08-27 14:54:09')
+      item1 = create(:item)
+      invoice1.invoice_items.create(item_id: item1.id,
+                                    quantity: 40,
+                                    unit_price: 100)
+      invoice1.transactions.create(credit_card_number: 1234567823456789,
+                                   credit_card_expiration_date: '04/23',
+                                   result: 'success')
+
+      @merch2 = create(:merchant)
+      invoice2 = create(:invoice, 
+                        merchant_id: @merch2.id, 
+                        created_at: '2012-04-07 14:54:09')
+      item2 = create(:item)
+      invoice2.invoice_items.create(item_id: item2.id,
+                                    quantity: 20,
+                                    unit_price: 100)
+      invoice2.transactions.create(credit_card_number: 1234567823456789,
+                                   credit_card_expiration_date: '04/23',
+                                   result: 'success')
+
+      @merch3 = create(:merchant)
+      invoice3 = create(:invoice, 
+                        merchant_id: @merch3.id, 
+                        created_at: '2012-03-29 14:54:09')
+      item3 = create(:item)
+      invoice3.invoice_items.create(item_id: item3.id,
+                                    quantity: 10,
+                                    unit_price: 100)
+      invoice3.transactions.create(credit_card_number: 1234567823456789,
+                                   credit_card_expiration_date: '04/23',
+                                   result: 'success')
+    end
+
+    it 'returns total revenue across all merchants between given dates' do
+      get '/api/v1/revenue?start=2012-01-09&end=2012-07-13'
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      merchants = JSON.parse(response.body, symbolize_names: true)
+      expect(merchants).to_not be_empty
+      merchants_data = merchants[:data]
+      expect(merchants_data.count).to eq(2)
+      
+    end
+  end
 
   describe 'GET /merchants/:id/revenue' do
     before :each do
