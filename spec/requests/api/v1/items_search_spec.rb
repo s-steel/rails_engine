@@ -70,7 +70,7 @@ RSpec.describe 'Item Search API', type: :request do
     before :each do
       @item1 = create(:item, name: 'Wooden Pants')
       @item2 = create(:item, name: 'Woodchuck Chucker')
-      other_item = create(:item, name: 'Wooho Doah')
+      create(:item, name: 'Wooho Doah')
     end
 
     it 'finds all items that meet that criteria' do

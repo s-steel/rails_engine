@@ -11,7 +11,7 @@ class Merchant < ApplicationRecord
     where("lower(#{attribute}) like ?", "%#{value.downcase}%").first
     # where("#{attribute} like ?", "%#{value}%").first
   end
-
+# find_by
   def self.search_all(attribute, value)
     where("lower(#{attribute}) like ?", "%#{value.downcase}%")
     # where("#{attribute} like ?", "%#{value}%")

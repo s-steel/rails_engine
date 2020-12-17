@@ -15,7 +15,7 @@ describe Item, type: :model do
 
   describe 'class methods' do
     it '.search_one' do
-      item1 = create(:item, name: 'Piece of Paper')
+      create(:item, name: 'Piece of Paper')
       item2 = create(:item, name: 'Woodchuck Chucker')
       item3 = create(:item, name: 'Wooho Doah', description: 'What are these?')
 
@@ -29,7 +29,7 @@ describe Item, type: :model do
     it '.search_all' do
       item1 = create(:item, name: 'Wooden Pants')
       item2 = create(:item, name: 'Woodchuck Chucker')
-      item3 = create(:item, name: 'Wooho Doah', description: 'What are these?')
+      create(:item, name: 'Wooho Doah', description: 'What are these?')
 
       results = Item.search_all('name', 'wood')
       expect(results.length).to eq(2)
