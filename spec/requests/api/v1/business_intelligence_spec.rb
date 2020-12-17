@@ -131,10 +131,20 @@ RSpec.describe 'Business Intelligence API', type: :request do
       get '/api/v1/revenue?start=2012-01-09&end=2012-07-13'
       expect(response).to be_successful
       expect(response).to have_http_status(200)
-      merchants = JSON.parse(response.body, symbolize_names: true)
-      expect(merchants).to_not be_empty
-      merchants_data = merchants[:data]
-      expect(merchants_data.count).to eq(2)
+      revenue = JSON.parse(response.body, symbolize_names: true)
+      expect(revenue).to_not be_empty
+      revenue_data = revenue[:data]
+
+      expect(revenue_data).to have_key(:id)
+      expect(revenue_data[:id]).to be_nil
+
+      expect(revenue_data).to have_key(:attributes)
+      expect(revenue_data[:attributes]).to be_a(Hash)
+
+      expect(revenue_data[:attributes]).to have_key(:revenue)
+      expect(revenue_data[:attributes][:revenue]).to be_a(Float)
+
+      expect(revenue_data[:attributes][:revenue]).to eq(3_000)
     end
   end
 
