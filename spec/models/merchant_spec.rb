@@ -76,5 +76,12 @@ describe Merchant, type: :model do
       expect(results[0].id).to eq(merch1.id)
       expect(results[1].id).to eq(merch3.id)
     end
+
+    it '.total_items' do
+      results = Merchant.total_items(2)
+      expect(results.length).to eq(2)
+      expect(results[0].id).to eq(@merch1.id)
+      expect(results[1].id).to eq(@merch3.id)
+    end
   end
 end

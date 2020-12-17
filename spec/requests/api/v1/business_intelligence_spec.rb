@@ -72,11 +72,21 @@ RSpec.describe 'Business Intelligence API', type: :request do
     end
   end
 
-  # describe 'GET /merchants/most_items?quantity=x' do
-  #   before :each do
-  #     get '/api/v1/merchants/most_items?quantity=2'
-  #   end
-  # end
+  describe 'GET /merchants/most_items?quantity=x' do
+    before :each do
+      get '/api/v1/merchants/most_items?quantity=2'
+    end
+
+    xit 'returns merchants based on total items' do
+      expect(response).to be_successful
+      expect(response).to have_http_status(200)
+      merchants = JSON.parse(response.body, symbolize_names: true)
+      expect(merchants).to_not be_empty
+      merchants_data = merchants[:data]
+      expect(merchants_data.count).to eq(2)
+      # require 'pry', binding.pry
+    end
+  end
 
   # describe 'GET /revenue?start=<start_date>&end=<end_date>' do
   #   before :each do

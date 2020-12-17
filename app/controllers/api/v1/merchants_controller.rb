@@ -26,6 +26,11 @@ class Api::V1::MerchantsController < ApplicationController
     head :no_content
   end
 
+  def total_items
+    limit = params[:quantity].to_i
+    json_response(MerchantSerializer.new(Merchant.total_items(limit)))
+  end
+
   private
 
   def merchant_params
