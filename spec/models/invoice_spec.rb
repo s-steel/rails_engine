@@ -54,9 +54,7 @@ describe Invoice, type: :model do
 
     it '.revenue_by_dates' do
       results = Invoice.revenue_by_dates('2012-01-05', '2012-07-29')
-      expect(results.length).to eq(2)
-      expect(results[0].id).to eq(@invoice3.id)
-      expect(results[1].id).to eq(@invoice2.id)
+      expect(results).to eq(3_000)
     end
   end
 end
