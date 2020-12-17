@@ -7,6 +7,7 @@ class Merchant < ApplicationRecord
   validates_presence_of :name
 
   def self.search_one(attribute, value)
+    # require 'pry', binding.pry
     where("lower(#{attribute}) like ?", "%#{value.downcase}%").first
     # where("#{attribute} like ?", "%#{value}%").first
   end
