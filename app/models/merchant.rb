@@ -9,12 +9,12 @@ class Merchant < ApplicationRecord
   def self.search_one(attribute, value)
     # require 'pry', binding.pry
     where("lower(#{attribute}) like ?", "%#{value.downcase}%").first
+    # where("updated_at = ?", "2012-03-27 14:54:09")
     # where("#{attribute} like ?", "%#{value}%").first
   end
 # find_by
   def self.search_all(attribute, value)
     where("lower(#{attribute}) like ?", "%#{value.downcase}%")
-    # where("#{attribute} like ?", "%#{value}%")
   end
 
   def self.most_revenue(limit = 10)
@@ -33,8 +33,7 @@ class Merchant < ApplicationRecord
       .merge(Transaction.successful)
       .merge(Invoice.shipped)
       .group(:id)
-      .where(id: merchant_id)
-      .first
+      .find_by(id: merchant_id)
   end
 
   def self.total_items(limit = 10)
