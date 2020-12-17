@@ -1,7 +1,7 @@
 # Rails Engine
 BE Mod 3 Individual Project
 
-![Rails Engine!](gif here?)
+![Rails Engine!](https://media2.giphy.com/media/tNmIuKk0kIROM/100.webp?cid=5a38a5a2kcq11xhqmkx9b2pisyzzdw2ffx6y4ch4eu8fwwkn&rid=100.webp)
 
 
 ## Background and Description
@@ -27,7 +27,7 @@ Below are the endpoints and example responses for the API.
 
 ## Database Schema
 
-![Database Schema](new schema here...)
+![Database Schema](https://user-images.githubusercontent.com/65255478/102554097-51119e00-4081-11eb-9a91-dd89ec735d2e.png)
 
 ***
 
