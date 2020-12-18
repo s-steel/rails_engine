@@ -38,7 +38,7 @@ RSpec.describe 'Item Search API', type: :request do
       expect(item_data[:attributes][:merchant_id]).to be_a(Integer)
     end
 
-    it 'can search using other criteria' do 
+    it 'can search using other criteria' do
       get '/api/v1/items/find?description=hese?'
       expect(response).to be_successful
       expect(response).to have_http_status(200)

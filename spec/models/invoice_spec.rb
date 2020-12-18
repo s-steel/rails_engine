@@ -23,7 +23,7 @@ describe Invoice, type: :model do
       @invoice1.invoice_items.create(item_id: item1.id,
                                      quantity: 40,
                                      unit_price: 100)
-      @invoice1.transactions.create(credit_card_number: 1_234_567_823_456_789,
+      @invoice1.transactions.create(credit_card_number: 1_234,
                                     credit_card_expiration_date: '04/23',
                                     result: 'success')
 
@@ -35,7 +35,7 @@ describe Invoice, type: :model do
       @invoice2.invoice_items.create(item_id: item2.id,
                                      quantity: 10,
                                      unit_price: 100)
-      @invoice2.transactions.create(credit_card_number: 1_234_567_823_456_789,
+      @invoice2.transactions.create(credit_card_number: 1_234,
                                     credit_card_expiration_date: '04/23',
                                     result: 'success')
 
@@ -47,7 +47,7 @@ describe Invoice, type: :model do
       @invoice3.invoice_items.create(item_id: item3.id,
                                      quantity: 20,
                                      unit_price: 100)
-      @invoice3.transactions.create(credit_card_number: 1_234_567_823_456_789,
+      @invoice3.transactions.create(credit_card_number: 1_234,
                                     credit_card_expiration_date: '04/23',
                                     result: 'success')
     end
