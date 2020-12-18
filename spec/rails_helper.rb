@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'database_cleaner'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
+SimpleCov.add_filter ['app/channels', 'app/mailers', 'app/jobs']
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'

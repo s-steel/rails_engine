@@ -83,8 +83,6 @@ RSpec.describe 'Merchant Search API', type: :request do
       expect(merchant).to_not be_empty
       merchant_data = merchant[:data]
       expect(merchant.count).to eq(1)
-
-      # expect(merchant_data[:attributes][:name]).to eq('Fahey-Stiedemann')
     end
   end
 end

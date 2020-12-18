@@ -4,15 +4,13 @@ class Merchant < ApplicationRecord
   has_many :invoice_items, through: :invoices
   has_many :customers, through: :invoices
 
-  validates_presence_of :name
+  validates :name, presence: true
 
   def self.search_one(attribute, value)
-    # require 'pry', binding.pry
-    where("lower(#{attribute}) like ?", "%#{value.downcase}%").first
+    find_by("lower(#{attribute}) like ?", "%#{value.downcase}%")
     # where("updated_at = ?", "2012-03-27 14:54:09")
-    # where("#{attribute} like ?", "%#{value}%").first
   end
-# find_by
+
   def self.search_all(attribute, value)
     where("lower(#{attribute}) like ?", "%#{value.downcase}%")
   end
