@@ -15,6 +15,6 @@ class Invoice < ApplicationRecord
               .select('sum(invoice_items.quantity * invoice_items.unit_price) AS revenue')
               .merge(Transaction.successful)
               .merge(Invoice.shipped)
-    revenue[0].revenue
+    revenue[0]
   end
 end
