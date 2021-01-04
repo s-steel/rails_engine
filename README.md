@@ -22,6 +22,7 @@ Below are the endpoints and example responses for the API.
 **[Merchant Search](#merchant-search)**<br>
 **[Item Search](#item-search)**<br>
 **[Business Intelligence](#business-intelligence)**<br>
+**[Try It](#try-it)**<br>
 
 ***
 
@@ -386,3 +387,12 @@ example: `http://localhost:3000/api/v1/merchants/1/revenue`
     }
 }
 ```
+
+## Try It
+
+Clone down this repository.<br>
+Navigate inside the `rails_engine` directory.<br>
+Run `bundle install` to prepare the gemfile.<br>
+Run `rake db:{create,migrate,seed}` to create and seed the database.<br>
+Run `rails s` to initiate a local server on your machine.<br>
+From here you can make api calls to your local server.  I recommend using Postman in order to make these call and see the results.<br>
